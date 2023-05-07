@@ -1,1 +1,5 @@
-console.log("log1");
+import { App } from './infrastructure/App';
+
+const app = new App();
+
+app.init();
