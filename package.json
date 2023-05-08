@@ -57,5 +57,8 @@
   },
   "engines": {
     "node": ">=14 <15"
+  },
+  "compilerOptions": {
+    "esModuleInterop": true,
   }
 }
