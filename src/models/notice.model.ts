@@ -1,7 +1,16 @@
 import mongoose from "mongoose";
 
-const petSchema = new mongoose.Schema({
-  name: {
+const noticeSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    require: [true, "Set title"],
+  },
+  category: {
+    type: String,
+    enum: ["sell", "lost/found", "in good hands"],
+    require: [true, "Set category"],
+  },
+  petName: {
     type: String,
     required: [true, "Set name for pet"],
   },
@@ -28,8 +37,15 @@ const petSchema = new mongoose.Schema({
   owner: {
     type: mongoose.SchemaTypes.ObjectId,
   },
+  place: {
+    type: String,
+    require: [true, "Set place"],
+  },
+  price: {
+    type: String,
+  },
 });
 
-const Pet = mongoose.model("Pets", petSchema);
+const Notice = mongoose.model("Notices", noticeSchema);
 
-export default Pet;
+export default Notice;
