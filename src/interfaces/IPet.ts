@@ -3,5 +3,8 @@
 
 export interface IPet {
     name: string;
-    age: number;
+    animal: string;
+    breed: string;
+    place: string;
+    age: string | number;
 }
