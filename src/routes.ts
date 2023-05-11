@@ -8,9 +8,11 @@ import {
 import { getNoticesByTitleCTRL } from "./controllers/noticesController";
 import { addServiceCTRL,getAllServicesCTRL } from "./controllers/serviceController";
 import { addNewsCTRL, getAllNewsCTRL } from "./controllers/newsContoller";
-
+import { getAuthValidation } from "./middlewares/authValidation";
+import { registrationCtrl,loginCtrl } from "./controllers/authController";
+import { authMiddleware } from "./middlewares/authMiddleware";
 const routes = (app: Express) => {
-  app.get("/api/pets", asyncWrapper(getAllPetsCTRL));
+  app.get("/api/pets",authMiddleware, asyncWrapper(getAllPetsCTRL));
   app.delete("/api/pets/:petId", asyncWrapper(deletePetCTRL));
   app.post("/api/pets", asyncWrapper(addPetCTRL));
 
@@ -19,6 +21,9 @@ const routes = (app: Express) => {
 
   app.post('/api/news', asyncWrapper(addNewsCTRL));
   app.get('/api/news', asyncWrapper(getAllNewsCTRL));
+
+  app.post('/registration',getAuthValidation, asyncWrapper(registrationCtrl));
+  app.post('/login',getAuthValidation, asyncWrapper(loginCtrl));
 
 
   app.get("/api/notices/:title", asyncWrapper(getNoticesByTitleCTRL));
