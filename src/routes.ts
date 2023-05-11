@@ -1,13 +1,34 @@
 import { Express, Request, Response } from "express";
 import asyncWrapper from "./heplers/asyncWrapper";
-import { addPetCTRL, getAllPetsCTRL } from "./controllers/petController";
-import { getNoticesByCategoryCTRL, getNoticesByIdCTRL, getNoticesByTitleCTRL } from "./controllers/noticesController";
 
+import {
+  getNoticesByCategoryCTRL,
+  getNoticesByIdCTRL,
+  getNoticesByTitleCTRL,
+} from "./controllers/noticesController";
+
+import {
+  addPetCTRL,
+  deletePetCTRL,
+  getAllPetsCTRL,
+} from "./controllers/petController";
+
+import {
+  addServiceCTRL,
+  getAllServicesCTRL,
+} from "./controllers/serviceController";
+import { addNewsCTRL, getAllNewsCTRL } from "./controllers/newsContoller";
 
 const routes = (app: Express) => {
   app.get("/api/pets", asyncWrapper(getAllPetsCTRL));
-  app.get("/lol", (req: Request, res: Response) => res.sendStatus(200).json());
+  app.delete("/api/pets/:petId", asyncWrapper(deletePetCTRL));
   app.post("/api/pets", asyncWrapper(addPetCTRL));
+
+  app.post("/api/service", asyncWrapper(addServiceCTRL));
+  app.get("/api/service", asyncWrapper(getAllServicesCTRL));
+
+  app.post("/api/news", asyncWrapper(addNewsCTRL));
+  app.get("/api/news", asyncWrapper(getAllNewsCTRL));
 
   app.get("/api/notices", asyncWrapper(getNoticesByTitleCTRL));
   app.get("/api/notices/:category", asyncWrapper(getNoticesByCategoryCTRL));
