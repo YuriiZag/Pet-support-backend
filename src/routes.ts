@@ -1,11 +1,7 @@
 import { Express, Request, Response } from "express";
 import asyncWrapper from "./heplers/asyncWrapper";
 
-import {
-  getNoticesByCategoryCTRL,
-  getNoticesByIdCTRL,
-  getNoticesByTitleCTRL,
-} from "./controllers/noticesController";
+import { deleteNoticesByIdCTRL, getNoticesByCategoryCTRL, getNoticesByIdCTRL, getNoticesByTitleCTRL, getPrivatFavouriteNoticesCTRL, getPrivatNoticesCTRL, setFavouriteNoticeCTRL } from "./controllers/noticesController";
 
 import {
   addPetCTRL,
@@ -13,10 +9,7 @@ import {
   getAllPetsCTRL,
 } from "./controllers/petController";
 
-import {
-  addServiceCTRL,
-  getAllServicesCTRL,
-} from "./controllers/serviceController";
+import { addServiceCTRL,getAllServicesCTRL } from "./controllers/serviceController";
 import { addNewsCTRL, getAllNewsCTRL } from "./controllers/newsContoller";
 
 const routes = (app: Express) => {
@@ -24,19 +17,21 @@ const routes = (app: Express) => {
   app.delete("/api/pets/:petId", asyncWrapper(deletePetCTRL));
   app.post("/api/pets", asyncWrapper(addPetCTRL));
 
-  app.post("/api/service", asyncWrapper(addServiceCTRL));
-  app.get("/api/service", asyncWrapper(getAllServicesCTRL));
 
-  app.post("/api/news", asyncWrapper(addNewsCTRL));
-  app.get("/api/news", asyncWrapper(getAllNewsCTRL));
+  app.post('/api/service', asyncWrapper(addServiceCTRL));
+  app.get('/api/service', asyncWrapper(getAllServicesCTRL));
+
+  app.post('/api/news', asyncWrapper(addNewsCTRL));
+  app.get('/api/news', asyncWrapper(getAllNewsCTRL));
 
   app.get("/api/notices", asyncWrapper(getNoticesByTitleCTRL));
   app.get("/api/notices/:category", asyncWrapper(getNoticesByCategoryCTRL));
   app.get("/api/notices/:id", asyncWrapper(getNoticesByIdCTRL));
-  app.patch("/api/notices/:id", asyncWrapper());
-  app.get("/api/notices/privat");
-  app.get("/api/notices/privat/favourite");
+  app.patch("/api/notices/:id", asyncWrapper(setFavouriteNoticeCTRL));
+  app.get("/api/notices/privat", asyncWrapper(getPrivatNoticesCTRL));
+  app.get("/api/notices/privat/favourite", asyncWrapper(getPrivatFavouriteNoticesCTRL));
   app.post("/api/notices");
-  app.delete("/api/notices/:id");
+  app.delete("/api/notices/:id", asyncWrapper(deleteNoticesByIdCTRL));
+
 };
 export default routes;
