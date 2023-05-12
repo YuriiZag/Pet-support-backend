@@ -1,7 +1,7 @@
 import { Express, Request, Response } from "express";
 import asyncWrapper from "./heplers/asyncWrapper";
 
-import { deleteNoticesByIdCTRL, getNoticesByCategoryCTRL, getNoticesByIdCTRL, getNoticesByTitleCTRL, getPrivatFavouriteNoticesCTRL, getPrivatNoticesCTRL, setFavouriteNoticeCTRL } from "./controllers/noticesController";
+import { addNoticeCTRL, deleteNoticesByIdCTRL, getNoticesByCategoryCTRL, getNoticesByIdCTRL, getNoticesByTitleCTRL, getPrivatFavouriteNoticesCTRL, getPrivatNoticesCTRL, setFavouriteNoticeCTRL } from "./controllers/noticesController";
 
 import {
   addPetCTRL,
@@ -16,8 +16,8 @@ import { registrationCtrl,loginCtrl } from "./controllers/authController";
 import { authMiddleware } from "./middlewares/authMiddleware";
 const routes = (app: Express) => {
   app.get("/api/pets",authMiddleware, asyncWrapper(getAllPetsCTRL));
-  app.delete("/api/pets/:petId", asyncWrapper(deletePetCTRL));
-  app.post("/api/pets", asyncWrapper(addPetCTRL));
+  app.delete("/api/pets/:petId",authMiddleware, asyncWrapper(deletePetCTRL));
+  app.post("/api/pets",authMiddleware, asyncWrapper(addPetCTRL));
 
 
   app.post('/api/service', asyncWrapper(addServiceCTRL));
@@ -26,21 +26,17 @@ const routes = (app: Express) => {
   app.post('/api/news', asyncWrapper(addNewsCTRL));
   app.get('/api/news', asyncWrapper(getAllNewsCTRL));
 
+  app.post('/registration',getAuthValidation, asyncWrapper(registrationCtrl));
+  app.post('/login',getAuthValidation, asyncWrapper(loginCtrl));
 
   app.get("/api/notices", asyncWrapper(getNoticesByTitleCTRL));
   app.get("/api/notices/:category", asyncWrapper(getNoticesByCategoryCTRL));
   app.get("/api/notices/:id", asyncWrapper(getNoticesByIdCTRL));
   app.patch("/api/notices/:id", asyncWrapper(setFavouriteNoticeCTRL));
-  app.get("/api/notices/privat", asyncWrapper(getPrivatNoticesCTRL));
-  app.get("/api/notices/privat/favourite", asyncWrapper(getPrivatFavouriteNoticesCTRL));
-
-  app.post('/registration',getAuthValidation, asyncWrapper(registrationCtrl));
-  app.post('/login',getAuthValidation, asyncWrapper(loginCtrl));
-
-
-  
-  app.post("/api/notices");
-  app.delete("/api/notices/:id", asyncWrapper(deleteNoticesByIdCTRL));
+  app.get("/api/notices/privat",authMiddleware, asyncWrapper(getPrivatNoticesCTRL));
+  app.get("/api/notices/privat/favourite",authMiddleware, asyncWrapper(getPrivatFavouriteNoticesCTRL));  
+  app.post("/api/notices",authMiddleware,asyncWrapper(addNoticeCTRL));
+  app.delete("/api/notices/:id",authMiddleware, asyncWrapper(deleteNoticesByIdCTRL));
 
 };
 export default routes;
