@@ -36,7 +36,7 @@ export const login = async (body: body) => {
   
     const token = jwt.sign(
       {
-        user: user._id,
+        userId: user._id,
         email: user.email,
       },
       salt
