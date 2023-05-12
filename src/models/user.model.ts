@@ -1,12 +1,17 @@
 import mongoose from "mongoose";
-
-const userSchema = new mongoose.Schema({
+import bcrypt from 'bcrypt'
+import { IUser } from "../interfaces/IUser";
+const userSchema = new mongoose.Schema<IUser>({
   avatar: {
     type: String,
   },
   email: {
     type: String,
     require: [true, "Set email"],
+  },
+  password: {
+    type: String,
+    require: [true, "Set password"],
   },
   birthday: {
     type: String,
@@ -26,6 +31,13 @@ const userSchema = new mongoose.Schema({
   favourite: {
     type: Array,
   },
+  token: String
+});
+
+userSchema.pre("save", async function () {
+  if (this.isNew) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 });
 
 const User = mongoose.model("Users", userSchema);

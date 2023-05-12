@@ -11,9 +11,11 @@ import {
 
 import { addServiceCTRL,getAllServicesCTRL } from "./controllers/serviceController";
 import { addNewsCTRL, getAllNewsCTRL } from "./controllers/newsContoller";
-
+import { getAuthValidation } from "./middlewares/authValidation";
+import { registrationCtrl,loginCtrl } from "./controllers/authController";
+import { authMiddleware } from "./middlewares/authMiddleware";
 const routes = (app: Express) => {
-  app.get("/api/pets", asyncWrapper(getAllPetsCTRL));
+  app.get("/api/pets",authMiddleware, asyncWrapper(getAllPetsCTRL));
   app.delete("/api/pets/:petId", asyncWrapper(deletePetCTRL));
   app.post("/api/pets", asyncWrapper(addPetCTRL));
 
@@ -24,12 +26,19 @@ const routes = (app: Express) => {
   app.post('/api/news', asyncWrapper(addNewsCTRL));
   app.get('/api/news', asyncWrapper(getAllNewsCTRL));
 
+
   app.get("/api/notices", asyncWrapper(getNoticesByTitleCTRL));
   app.get("/api/notices/:category", asyncWrapper(getNoticesByCategoryCTRL));
   app.get("/api/notices/:id", asyncWrapper(getNoticesByIdCTRL));
   app.patch("/api/notices/:id", asyncWrapper(setFavouriteNoticeCTRL));
   app.get("/api/notices/privat", asyncWrapper(getPrivatNoticesCTRL));
   app.get("/api/notices/privat/favourite", asyncWrapper(getPrivatFavouriteNoticesCTRL));
+
+  app.post('/registration',getAuthValidation, asyncWrapper(registrationCtrl));
+  app.post('/login',getAuthValidation, asyncWrapper(loginCtrl));
+
+
+  
   app.post("/api/notices");
   app.delete("/api/notices/:id", asyncWrapper(deleteNoticesByIdCTRL));
 
