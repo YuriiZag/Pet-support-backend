@@ -1,21 +1,35 @@
 import { Request, Response, NextFunction } from "express";
 import { addPet, deletePet, getAllPets } from "../services/pets";
+import { IUserRequest } from "../interfaces/IUserRequest";
+
+type user = {
+  user: string;
+  email: string;
+};
+
+interface UserRequest extends Request {
+  user: user 
+}
 
 export const addPetCTRL = async (
-  req: Request,
+  req: UserRequest,
   res: Response,
   next: NextFunction
 ) => {
+  
+  
   const response = await addPet(req.body);
   return res.status(201).json({ message: "Pet added", response });
 };
 
 export const getAllPetsCTRL = async (
-  req: Request,
+  req: UserRequest,
   res: Response,
   next: NextFunction
 ) => {
-  const response = await getAllPets();
+  console.log(req.user);
+  
+  const response = await getAllPets(req.user);
   return res.status(201).json({message:'Success', response });
 };
 
