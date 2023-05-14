@@ -14,6 +14,7 @@ import { addNewsCTRL, getAllNewsCTRL } from "./controllers/newsContoller";
 import { getAuthValidation } from "./middlewares/authValidation";
 import { registrationCtrl,loginCtrl } from "./controllers/authController";
 import { authMiddleware } from "./middlewares/authMiddleware";
+import { uploadCloud } from "./middlewares/fileUploadMiddleware"
 const routes = (app: Express) => {
   app.get("/api/pets",authMiddleware, asyncWrapper(getAllPetsCTRL));
   app.delete("/api/pets/:petId",authMiddleware, asyncWrapper(deletePetCTRL));
@@ -35,7 +36,7 @@ const routes = (app: Express) => {
   app.patch("/api/notices/:id", asyncWrapper(setFavouriteNoticeCTRL));
   app.get("/api/notices/privat",authMiddleware, asyncWrapper(getPrivatNoticesCTRL));
   app.get("/api/notices/privat/favourite",authMiddleware, asyncWrapper(getPrivatFavouriteNoticesCTRL));  
-  app.post("/api/notices",authMiddleware,asyncWrapper(addNoticeCTRL));
+  app.post("/api/notices", authMiddleware, uploadCloud.single("imageURL"), asyncWrapper(addNoticeCTRL));
   app.delete("/api/notices/:id",authMiddleware, asyncWrapper(deleteNoticesByIdCTRL));
 
 };
