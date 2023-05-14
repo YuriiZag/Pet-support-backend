@@ -1,5 +1,11 @@
+import { INotice } from "./../interfaces/INotice";
 import { IUser } from "../interfaces/IUserRequest";
 import Notice from "../models/notice.model";
+export const addNotice = async (body: INotice) => {
+  const newNotice = new Notice(body);
+  await newNotice.save();
+  return newNotice;
+};
 
 export const getNoticesByTitle = async (title: string | undefined) => {
   const noticesByTitle = await Notice.find({ title });
@@ -16,7 +22,10 @@ export const getNoticesById = async (id: string | undefined) => {
   return noticesById;
 };
 
-export const setFavouriteNotice = async (id: string | undefined, user: IUser) => {
+export const setFavouriteNotice = async (
+  id: string | undefined,
+  user: IUser
+) => {
   const noticesById = await Notice.findOneAndUpdate(
     { _id: id },
     { $set: { favourite: user._id } }
@@ -24,12 +33,8 @@ export const setFavouriteNotice = async (id: string | undefined, user: IUser) =>
   return noticesById;
 };
 
-export const getPrivatNotices = async (
-  user: IUser
-) => {
-  const noticesById = await Notice.find(
-    { owner: user._id }
-  );
+export const getPrivatNotices = async (user: IUser) => {
+  const noticesById = await Notice.find({ owner: user._id });
   return noticesById;
 };
 

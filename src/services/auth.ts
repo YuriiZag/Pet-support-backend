@@ -29,10 +29,10 @@ export const login = async (body: body) => {
       throw new NotAuthorizedError("User not found");
     }
     
-    //  const wrongPassword = !(await bcrypt.compare(password, user.password));
-    // if (wrongPassword) {
-    //   throw new NotAuthorizedError("Email or password is wrong");
-    // }
+     const wrongPassword = !(await bcrypt.compare(password, user.password));
+    if (wrongPassword) {
+      throw new NotAuthorizedError("Email or password is wrong");
+    }
   
     const token = jwt.sign(
       {

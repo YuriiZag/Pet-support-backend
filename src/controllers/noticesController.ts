@@ -1,15 +1,29 @@
 import { Request, Response, NextFunction } from "express";
-import { deleteNoticesById, getNoticesByCategory, getNoticesById, getNoticesByTitle, getPrivatNotices, setFavouriteNotice } from "../services/notices";
+import {
+  addNotice,
+  deleteNoticesById,
+  getNoticesByCategory,
+  getNoticesById,
+  getNoticesByTitle,
+  getPrivatNotices,
+  setFavouriteNotice,
+} from "../services/notices";
 import { IUserRequest } from "../interfaces/IUserRequest";
-import { ParsedUrlQuery } from "querystring";
 
+export const addNoticeCTRL = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const response = await addNotice(req.body);
+  return res.status(201).json({ message: "Contact Added", response });
+};
 export const getNoticesByTitleCTRL = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-    let title: any = "";
-    title = req.query.title
+  const title = req.query.title as string;
   const response = await getNoticesByTitle(title);
   return res.status(201).json({ message: "Contact Added", response });
 };
@@ -24,7 +38,6 @@ export const getNoticesByCategoryCTRL = async (
   const response = await getNoticesByCategory(category);
   return res.status(201).json({ message: "Contact Added", response });
 };
-
 
 export const getNoticesByIdCTRL = async (
   req: Request,
