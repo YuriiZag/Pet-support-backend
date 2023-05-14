@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { addPet, deletePet, getAllPets } from "../services/pets";
-import { IUserRequest } from "../interfaces/IUserRequest";
 
 type user = {
   user: string;
