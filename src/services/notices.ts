@@ -1,10 +1,12 @@
 import { INotice } from "./../interfaces/INotice";
-import { IRequestOwner} from "../interfaces/IUserRequest";
+import { IRequestOwner} from "../interfaces/IRequestOwner";
 import Notice from "../models/notice.model";
 import User from "../models/user.model";
-import { IUser } from "../interfaces/IUser";
-import { string } from "zod";
+
+
 export const addNotice = async (body: INotice, filePath: string) => {
+  console.log(filePath);
+  
   const newNotice = new Notice({ ...body, avatar: filePath});
   await newNotice.save();
   return newNotice;

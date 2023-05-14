@@ -7,7 +7,3 @@ export interface IUserRequest extends Request {
   };
 }
 
-export interface IRequestOwner {
-  userId: string;
-  email: string;
-}
