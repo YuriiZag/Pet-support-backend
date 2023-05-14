@@ -11,13 +11,13 @@ type user = {
   email: string;
 };
 
-interface authMiddlewareResponse extends Response {
+interface authMiddlewareRequest extends Request {
   user?: user | JwtPayload;
 }
 
 export const authMiddleware = (
-  req: Request,
-  res: authMiddlewareResponse,
+  req: authMiddlewareRequest,
+  res: Response,
   next: NextFunction
 ): any => {
   if (!req.headers["authorization"]) {
@@ -26,9 +26,10 @@ export const authMiddleware = (
   const token = req.headers["authorization"]?.split(" ");
   if (token) {
     try {
-      const user = jwt.decode(token[1], salt) as JwtPayload
+      const user = jwt.decode(token[1], salt) as JwtPayload;
 
-      res.user = user;
+      req.user = user;
+      
     } catch (error) {
       next(new NotAuthorizedError("Not authorized"));
     }
