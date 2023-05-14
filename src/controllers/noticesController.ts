@@ -15,8 +15,13 @@ export const addNoticeCTRL = async (
   res: Response,
   next: NextFunction
 ) => {
-  const response = await addNotice(req.body);
-  return res.status(201).json({ message: "Contact Added", response });
+  let filePath: string = ''
+  if (req.file?.path !== undefined) {
+    filePath = req.file.path;
+  }
+
+  const response = await addNotice(req.body, filePath);
+  return res.status(201).json({ message: "Notice added", response });
 };
 export const getNoticesByTitleCTRL = async (
   req: Request,
@@ -25,7 +30,7 @@ export const getNoticesByTitleCTRL = async (
 ) => {
   const title = req.query.title as string;
   const response = await getNoticesByTitle(title);
-  return res.status(201).json({ message: "Contact Added", response });
+  return res.status(201).json({ message: "Notices by title", response });
 };
 
 export const getNoticesByCategoryCTRL = async (
@@ -33,10 +38,9 @@ export const getNoticesByCategoryCTRL = async (
   res: Response,
   next: NextFunction
 ) => {
-  let category: string | undefined = "";
-  category = req.params.category;
+  const category = req.params.category as string;
   const response = await getNoticesByCategory(category);
-  return res.status(201).json({ message: "Contact Added", response });
+  return res.status(201).json({ message: "Notices by category", response });
 };
 
 export const getNoticesByIdCTRL = async (
@@ -44,10 +48,9 @@ export const getNoticesByIdCTRL = async (
   res: Response,
   next: NextFunction
 ) => {
-  let id: string | undefined = "";
-  id = req.params.id;
+  const id = req.params.id as string;
   const response = await getNoticesById(id);
-  return res.status(201).json({ message: "Contact Added", response });
+  return res.status(201).json({ message: "Notices by id", response });
 };
 
 export const setFavouriteNoticeCTRL = async (
@@ -55,10 +58,9 @@ export const setFavouriteNoticeCTRL = async (
   res: Response,
   next: NextFunction
 ) => {
-  let id: string | undefined = "";
-  id = req.params.id;
+  const id = req.params.id as string;
   const response = await setFavouriteNotice(id, req.user);
-  return res.status(201).json({ message: "Contact Added", response });
+  return res.status(201).json({ message: "Notice set to favourite", response });
 };
 
 export const getPrivatNoticesCTRL = async (
@@ -67,7 +69,7 @@ export const getPrivatNoticesCTRL = async (
   next: NextFunction
 ) => {
   const response = await getPrivatNotices(req.user);
-  return res.status(201).json({ message: "Contact Added", response });
+  return res.status(201).json({ message: "Privat notices", response });
 };
 
 export const getPrivatFavouriteNoticesCTRL = async (
@@ -76,7 +78,7 @@ export const getPrivatFavouriteNoticesCTRL = async (
   next: NextFunction
 ) => {
   const response = await getPrivatNotices(req.user);
-  return res.status(201).json({ message: "Contact Added", response });
+  return res.status(201).json({ message: "Privat favourite notices", response });
 };
 
 export const deleteNoticesByIdCTRL = async (
@@ -84,8 +86,7 @@ export const deleteNoticesByIdCTRL = async (
   res: Response,
   next: NextFunction
 ) => {
-  let id: string | undefined = "";
-  id = req.params.id;
+  const id = req.params.id as string;
   const response = await deleteNoticesById(id);
-  return res.status(201).json({ message: "Contact Added", response });
+  return res.status(201).json({ message: "Notice deleted", response });
 };

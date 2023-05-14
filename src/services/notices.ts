@@ -1,8 +1,13 @@
 import { INotice } from "./../interfaces/INotice";
-import { IUser } from "../interfaces/IUserRequest";
+import { IRequestOwner} from "../interfaces/IRequestOwner";
 import Notice from "../models/notice.model";
-export const addNotice = async (body: INotice) => {
-  const newNotice = new Notice(body);
+import User from "../models/user.model";
+
+
+export const addNotice = async (body: INotice, filePath: string) => {
+  console.log(filePath);
+  
+  const newNotice = new Notice({ ...body, avatar: filePath});
   await newNotice.save();
   return newNotice;
 };
@@ -24,22 +29,25 @@ export const getNoticesById = async (id: string | undefined) => {
 
 export const setFavouriteNotice = async (
   id: string | undefined,
-  user: IUser
+  user: IRequestOwner
 ) => {
-  const noticesById = await Notice.findOneAndUpdate(
-    { _id: id },
-    { $set: { favourite: user._id } }
+  const noticeById = await Notice.findOne(
+    { _id: id }
   );
+  await User.findOneAndUpdate({ $set: { favourite: noticeById?._id } });
+  return noticeById;
+};
+
+export const getPrivatNotices = async (user: IRequestOwner) => {
+  const noticesById = await Notice.find({ owner: user.userId });
   return noticesById;
 };
 
-export const getPrivatNotices = async (user: IUser) => {
-  const noticesById = await Notice.find({ owner: user._id });
-  return noticesById;
-};
-
-export const getPrivatFavouriteNotices = async (user: IUser) => {
-  const noticesById = await Notice.find({ _id: { $all: [...user.favourite] } });
+export const getPrivatFavouriteNotices = async (user: IRequestOwner) => {
+  const foundUser: any = await User.find({ _id: user.userId });
+  const noticesById = await Notice.find({
+    _id: { $all: [...foundUser?.favourite] },
+  });
   return noticesById;
 };
 
