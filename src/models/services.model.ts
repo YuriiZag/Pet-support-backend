@@ -24,6 +24,8 @@ const serviceSchema = new mongoose.Schema({
     type: String,
     require: [true, "Set phone"],
   },
+  url: String,
+  mapUrl: String,
 });
 
 const Service = mongoose.model("Services", serviceSchema);
