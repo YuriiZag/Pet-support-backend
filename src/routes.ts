@@ -36,10 +36,10 @@ const routes = (app: Express) => {
 
   app.get("/api/user/pets",authMiddleware, asyncWrapper(getUsersPetsInfoCTRL))
 
-  app.post("/api/service", asyncWrapper(addServiceCTRL));
+  app.post("/api/service", uploadCloud.single("logo"), asyncWrapper(addServiceCTRL));
   app.get("/api/service", asyncWrapper(getAllServicesCTRL));
 
-  app.post("/api/news", asyncWrapper(addNewsCTRL));
+  app.post("/api/news", uploadCloud.single("imageURL"), asyncWrapper(addNewsCTRL));
   app.get("/api/news", asyncWrapper(getAllNewsCTRL));
 
   app.post("/registration", getAuthValidation, asyncWrapper(registrationCtrl));
