@@ -5,13 +5,14 @@ import {
   getNoticesByCategory,
   getNoticesById,
   getNoticesByTitle,
+  getPrivatFavouriteNotices,
   getPrivatNotices,
   setFavouriteNotice,
 } from "../services/notices";
 import { IUserRequest } from "../interfaces/IUserRequest";
 
 export const addNoticeCTRL = async (
-  req: Request,
+  req: IUserRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -20,7 +21,7 @@ export const addNoticeCTRL = async (
     filePath = req.file.path;
   }
 
-  const response = await addNotice(req.body, filePath);
+  const response = await addNotice(req.body, filePath, req.user);
   return res.status(201).json({ message: "Notice added", response });
 };
 export const getNoticesByTitleCTRL = async (
@@ -59,6 +60,8 @@ export const setFavouriteNoticeCTRL = async (
   next: NextFunction
 ) => {
   const id = req.params.id as string;
+  console.log('1',req.user);
+  
   const response = await setFavouriteNotice(id, req.user);
   return res.status(201).json({ message: "Notice set to favourite", response });
 };
@@ -68,6 +71,8 @@ export const getPrivatNoticesCTRL = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(1);
+  
   const response = await getPrivatNotices(req.user);
   return res.status(201).json({ message: "Privat notices", response });
 };
@@ -77,7 +82,7 @@ export const getPrivatFavouriteNoticesCTRL = async (
   res: Response,
   next: NextFunction
 ) => {
-  const response = await getPrivatNotices(req.user);
+  const response = await getPrivatFavouriteNotices(req.user);
   return res.status(201).json({ message: "Privat favourite notices", response });
 };
 

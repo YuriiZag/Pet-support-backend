@@ -47,28 +47,16 @@ const routes = (app: Express) => {
 
   app.get("/api/notices", asyncWrapper(getNoticesByTitleCTRL));
   app.get("/api/notices/:category", asyncWrapper(getNoticesByCategoryCTRL));
-  app.get("/api/notices/:id", asyncWrapper(getNoticesByIdCTRL));
-  app.patch("/api/notices/:id", asyncWrapper(setFavouriteNoticeCTRL));
-  app.get(
-    "/api/notices/privat",
+  app.get("/api/notice/:id", asyncWrapper(getNoticesByIdCTRL));
+  app.patch(
+    "/api/notice/:id",
     authMiddleware,
-    asyncWrapper(getPrivatNoticesCTRL)
+    asyncWrapper(setFavouriteNoticeCTRL)
   );
-  app.get(
-    "/api/notices/privat/favourite",
-    authMiddleware,
-    asyncWrapper(getPrivatFavouriteNoticesCTRL)
-  );
-  app.post(
-    "/api/notices",
-    authMiddleware,
-    uploadCloud.single("imageURL"),
-    asyncWrapper(addNoticeCTRL)
-  );
-  app.delete(
-    "/api/notices/:id",
-    authMiddleware,
-    asyncWrapper(deleteNoticesByIdCTRL)
-  );
+  app.get("/api/privat-notices",authMiddleware, asyncWrapper(getPrivatNoticesCTRL));
+  app.get("/api/privat-notices/favourite",authMiddleware, asyncWrapper(getPrivatFavouriteNoticesCTRL));  
+  app.post("/api/notices", authMiddleware, uploadCloud.single("avatar"), asyncWrapper(addNoticeCTRL));
+  app.delete("/api/notice/:id",authMiddleware, asyncWrapper(deleteNoticesByIdCTRL));
+
 };
 export default routes;
