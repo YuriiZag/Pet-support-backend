@@ -18,7 +18,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   folder: "avatars",
   allowedFormats: ["jpg", "png"],
-  filename: (req: Request, file, cb) => {
+  filename: (req, file, cb) => {
     cb(null, file.originalname);
   },
 });
