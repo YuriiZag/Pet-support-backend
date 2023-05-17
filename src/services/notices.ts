@@ -1,13 +1,26 @@
 import { INotice } from "./../interfaces/INotice";
-import { IRequestOwner} from "../interfaces/IRequestOwner";
+import { IRequestOwner } from "../interfaces/IRequestOwner";
 import Notice from "../models/notice.model";
 import User from "../models/user.model";
 import { ConflictError } from "../heplers/errors";
+import { WrongParametersError } from "../heplers/errors";
 
 
-export const addNotice = async (body: INotice, filePath: string, user: IRequestOwner) => {
-  const newNotice = new Notice({ ...body, avatar: filePath, owner: user.userId});
-  await newNotice.save();
+export const addNotice = async (
+  body: INotice,
+  filePath: string,
+  user: IRequestOwner
+) => {
+  const newNotice = new Notice({
+    ...body,
+    avatar: filePath,
+    owner: user.userId,
+  });
+  try {
+    await newNotice.save();
+  } catch (error) {
+    throw new WrongParametersError(error.message);
+  }
   return newNotice;
 };
 
@@ -23,6 +36,10 @@ export const getNoticesByCategory = async (category: string | undefined) => {
 
 export const getNoticesById = async (id: string | undefined) => {
   const noticesById = await Notice.findOne({ _id: id });
+  console.log(noticesById);
+  if (noticesById === null) {
+    throw new WrongParametersError(`There are no notice with id: ${id} found`);
+  }
   return noticesById;
 };
 
@@ -30,19 +47,21 @@ export const setFavouriteNotice = async (
   id: string | undefined,
   user: IRequestOwner
 ) => {
-  
-  const noticeById = await Notice.findOne(
-    { _id: id }
-  );
+  const noticeById = await Notice.findOne({ _id: id });
+  if (noticeById === null) {
+    throw new WrongParametersError(`There are no notice with id: ${id} found`);
+  }
   const foundUser: any = await User.findOne({ _id: user.userId });
-  foundUser.favourite.map(noticeId => {
+  foundUser.favourite.map((noticeId) => {
     if (noticeId === id) {
-      throw new ConflictError(`notice with id ${id} already in list`)
+      throw new ConflictError(`notice with id ${id} already in list`);
     }
-  })
+  });
   await User.findOneAndUpdate(
     { _id: user.userId },
-    { $set: { favourite: [...foundUser.favourite, noticeById?._id.toString()] } }
+    {
+      $set: { favourite: [...foundUser.favourite, noticeById?._id.toString()] },
+    }
   );
   return noticeById;
 };
@@ -54,16 +73,17 @@ export const getPrivatNotices = async (user: IRequestOwner) => {
 
 export const getPrivatFavouriteNotices = async (user: IRequestOwner) => {
   const foundUser: any = await User.findOne({ _id: user.userId });
-  console.log(foundUser);
-  console.log(foundUser.favourite);
-  
-  const noticesByFavourite = await Notice.find({
-    _id: { $all: [...foundUser.favourite] },
-  });
-  return noticesByFavourite;
+   const allNotices = await Notice.find({});
+  const favouriteNoticesList = allNotices.filter(notice => foundUser.favourite.includes(notice._id))
+
+  return favouriteNoticesList;
 };
 
 export const deleteNoticesById = async (id: string | undefined) => {
-  const noticesById = await Notice.findOneAndDelete({ _id: id });
-  return noticesById;
+  try {
+    const noticesById = await Notice.findOneAndDelete({ _id: id });
+    return noticesById;
+  } catch (error) {
+    throw new WrongParametersError(`There are no notice with id: ${id} found`);
+  }
 };
