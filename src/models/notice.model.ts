@@ -11,8 +11,7 @@ const noticeSchema = new mongoose.Schema({
     require: [true, "Set category"],
   },
   petName: {
-    type: String,
-    required: [true, "Set name for pet"],
+    type: String
   },
   kind: {
     type: String,
@@ -20,7 +19,6 @@ const noticeSchema = new mongoose.Schema({
   },
   breed: {
     type: String,
-    require: [true, "Set pet breed"],
   },
   sex: {
     type: String,
@@ -29,7 +27,6 @@ const noticeSchema = new mongoose.Schema({
   },
   dateOfBirth: {
     type: String,
-    require: [true, "Set pet date of birth"],
   },
   avatar: {
     type: String,

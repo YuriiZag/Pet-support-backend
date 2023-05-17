@@ -22,9 +22,12 @@ import { addNewsCTRL, getAllNewsCTRL } from "./controllers/newsContoller";
 import { getAuthValidation } from "./middlewares/authValidation";
 import { registrationCtrl, loginCtrl } from "./controllers/authController";
 import { authMiddleware } from "./middlewares/authMiddleware";
+
+import { addNoticeValidation } from "./middlewares/noticeValidation";
 import { getPetValidation } from "./middlewares/petsValidation";
 import { uploadCloud } from "./middlewares/fileUploadMiddleware";
 import { getUsersPetsInfoCTRL } from "./controllers/UsersPetsController";
+
 const routes = (app: Express) => {
   app.delete("/api/pets/:petId", authMiddleware, asyncWrapper(deletePetCTRL));
   app.post(
@@ -55,7 +58,13 @@ const routes = (app: Express) => {
   );
   app.get("/api/privat-notices",authMiddleware, asyncWrapper(getPrivatNoticesCTRL));
   app.get("/api/privat-notices/favourite",authMiddleware, asyncWrapper(getPrivatFavouriteNoticesCTRL));  
-  app.post("/api/notices", authMiddleware, uploadCloud.single("avatar"), asyncWrapper(addNoticeCTRL));
+  app.post(
+    "/api/notices",
+    authMiddleware,
+    uploadCloud.single("avatar"),
+    addNoticeValidation,
+    asyncWrapper(addNoticeCTRL)
+  );
   app.delete("/api/notice/:id",authMiddleware, asyncWrapper(deleteNoticesByIdCTRL));
 
 };
