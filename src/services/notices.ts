@@ -74,9 +74,8 @@ export const getPrivatNotices = async (user: IRequestOwner) => {
 export const getPrivatFavouriteNotices = async (user: IRequestOwner) => {
   const foundUser: any = await User.findOne({ _id: user.userId });
    const allNotices = await Notice.find({});
-  const favouriteNoticesList = allNotices.filter(notice => foundUser.favourite.includes(notice._id))
 
-  return favouriteNoticesList;
+  return allNotices;
 };
 
 export const deleteNoticesById = async (id: string | undefined) => {
