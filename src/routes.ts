@@ -19,7 +19,6 @@ import {
   getAllServicesCTRL,
 } from "./controllers/serviceController";
 import { addNewsCTRL, getAllNewsCTRL } from "./controllers/newsContoller";
-import { getAuthValidation } from "./middlewares/authValidation";
 import { registrationCtrl, loginCtrl } from "./controllers/authController";
 import { authMiddleware } from "./middlewares/authMiddleware";
 
@@ -45,8 +44,8 @@ const routes = (app: Express) => {
   app.post("/api/news", uploadCloud.single("imageURL"), asyncWrapper(addNewsCTRL));
   app.get("/api/news", asyncWrapper(getAllNewsCTRL));
 
-  app.post("/registration", getAuthValidation, asyncWrapper(registrationCtrl));
-  app.post("/login", getAuthValidation, asyncWrapper(loginCtrl));
+  app.post("/registration",  asyncWrapper(registrationCtrl));
+  app.post("/login", asyncWrapper(loginCtrl));
 
   app.get("/api/notices", asyncWrapper(getNoticesByTitleCTRL));
   app.get("/api/notices/:category", asyncWrapper(getNoticesByCategoryCTRL));
