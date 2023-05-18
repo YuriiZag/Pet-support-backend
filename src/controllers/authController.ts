@@ -1,5 +1,8 @@
 import { register, login } from "../services/auth";
 import { Request, Response, NextFunction } from "express";
+
+import { IUser } from "../interfaces/IUser";
+
 export const registrationCtrl = async (
   req: Request,
   res: Response,
@@ -15,7 +18,7 @@ export const loginCtrl = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { token, user } = await login(req.body);
+  const { token, user } : {token: string, user: IUser} = await login(req.body);
   res.json({
     user: { email: user.email},
     token,

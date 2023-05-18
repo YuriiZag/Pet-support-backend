@@ -16,7 +16,10 @@ export const getAuthValidation = (
     password: Joi.string()
       .required()
       .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
+
+    name: Joi.string().required(),
     birthday: Joi.string(),
+
     phone: Joi.string(),
     city: Joi.string(),
   });
