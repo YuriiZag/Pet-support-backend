@@ -20,7 +20,7 @@ export const loginCtrl = async (
 ) => {
   const { token, user } : {token: string, user: IUser} = await login(req.body);
   res.json({
-    user: { email: user.email},
+    user,
     token,
   });
 };
