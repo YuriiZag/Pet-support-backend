@@ -9,6 +9,10 @@ const userSchema = new mongoose.Schema<IUser>({
     type: String,
     require: [true, "Set email"],
   },
+  name: {
+    type: String,
+    require: [true, "Set email"],
+  },
   password: {
     type: String,
     require: [true, "Set password"],
