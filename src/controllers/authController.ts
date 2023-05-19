@@ -1,4 +1,5 @@
-import { register, login } from "../services/auth";
+import { IUserRequest } from "./../interfaces/IUserRequest";
+import { register, login, current } from "../services/auth";
 import { Request, Response, NextFunction } from "express";
 
 import { IUser } from "../interfaces/IUser";
@@ -18,9 +19,20 @@ export const loginCtrl = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { token, user } : {token: string, user: IUser} = await login(req.body);
+  const { token, user }: { token: string; user: IUser } = await login(req.body);
   res.json({
-    user: { email: user.email},
+    user,
     token,
+  });
+};
+
+export const currentCtrl = async (
+  req: IUserRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = await current(req.user);
+  res.json({
+    user
   });
 };
