@@ -48,9 +48,10 @@ export const login = async (body: body) => {
   return { token, user };
 };
 
-export const current = async ({user}: IUserRequest) => {
-  
-  const currentUser = await User.findById(user);
+export const current = async ({userId}: IUserRequest) => {
+  console.log(userId);
+
+  const currentUser = await User.findById(userId);
   if (!currentUser) {
     throw new NotAuthorizedError("Not authorized");
   }
