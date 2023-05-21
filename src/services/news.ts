@@ -7,7 +7,7 @@ export const addNews = async (body: INews) => {
   await newNew.save();
   return newNew;
 };
-export const getAllNews = async () => {
-  const response = News.find({})
+export const getNewsByTitle = async (title: string) => {
+  const response = News.find({title})
   return response;
 };

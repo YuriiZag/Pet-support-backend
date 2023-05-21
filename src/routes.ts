@@ -18,7 +18,7 @@ import {
   addServiceCTRL,
   getAllServicesCTRL,
 } from "./controllers/serviceController";
-import { addNewsCTRL, getAllNewsCTRL } from "./controllers/newsContoller";
+import { addNewsCTRL, getNewsByTitleCTRL } from "./controllers/newsContoller";
 import { registrationCtrl, loginCtrl, currentCtrl } from "./controllers/authController";
 import { authMiddleware } from "./middlewares/authMiddleware";
 
@@ -42,7 +42,7 @@ const routes = (app: Express) => {
   app.get("/api/service", asyncWrapper(getAllServicesCTRL));
 
   app.post("/api/news", uploadCloud.single("imageURL"), asyncWrapper(addNewsCTRL));
-  app.get("/api/news", asyncWrapper(getAllNewsCTRL));
+  app.get("/api/news", asyncWrapper(getNewsByTitleCTRL));
 
   app.post("/registration",  asyncWrapper(registrationCtrl));
   app.post("/login", asyncWrapper(loginCtrl));

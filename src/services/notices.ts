@@ -4,6 +4,7 @@ import Notice from "../models/notice.model";
 import User from "../models/user.model";
 import { ConflictError } from "../heplers/errors";
 import { WrongParametersError } from "../heplers/errors";
+import { IUser } from "../interfaces/IUser";
 
 
 export const addNotice = async (
@@ -14,7 +15,7 @@ export const addNotice = async (
   const newNotice = new Notice({
     ...body,
     avatar: filePath,
-    owner: user.userId,
+    owner: user._id,
   });
   try {
     await newNotice.save();
@@ -51,14 +52,14 @@ export const setFavouriteNotice = async (
   if (noticeById === null) {
     throw new WrongParametersError(`There are no notice with id: ${id} found`);
   }
-  const foundUser: any = await User.findOne({ _id: user.userId });
+  const foundUser: any = await User.findOne({ _id: user._id });
   foundUser.favourite.map((noticeId) => {
     if (noticeId === id) {
       throw new ConflictError(`notice with id ${id} already in list`);
     }
   });
   await User.findOneAndUpdate(
-    { _id: user.userId },
+    { _id: user._id },
     {
       $set: { favourite: [...foundUser.favourite, noticeById?._id.toString()] },
     }
@@ -67,12 +68,12 @@ export const setFavouriteNotice = async (
 };
 
 export const getPrivatNotices = async (user: IRequestOwner) => {
-  const noticesByUser = await Notice.find({ owner: user.userId });
+  const noticesByUser = await Notice.find({ owner: user._id });
   return noticesByUser;
 };
 
 export const getPrivatFavouriteNotices = async (user: IRequestOwner) => {
-  const foundUser: any = await User.findOne({ _id: user.userId });
+  const foundUser: any = await User.findOne({ _id: user._id });
    const allNotices = await Notice.find({});
 
   return allNotices;
