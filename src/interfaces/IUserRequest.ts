@@ -1,6 +1,6 @@
 import { Request} from "express";
 type user = {
-  _id: string;
+  userId: string;
   email: string;
 };
 

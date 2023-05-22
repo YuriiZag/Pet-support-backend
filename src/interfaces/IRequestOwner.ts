@@ -1,4 +1,4 @@
 export interface IRequestOwner {
-  _id: string;
+  userId: string;
   email: string;
 }

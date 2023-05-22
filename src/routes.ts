@@ -19,7 +19,7 @@ import {
   getAllServicesCTRL,
 } from "./controllers/serviceController";
 import { addNewsCTRL, getNewsByTitleCTRL } from "./controllers/newsContoller";
-import { registrationCtrl, loginCtrl, currentCtrl } from "./controllers/authController";
+import { registrationCtrl, loginCtrl, currentCtrl, LogOutCtrl } from "./controllers/authController";
 import { authMiddleware } from "./middlewares/authMiddleware";
 
 import { addNoticeValidation } from "./middlewares/noticeValidation";
@@ -47,6 +47,7 @@ const routes = (app: Express) => {
   app.post("/registration",  asyncWrapper(registrationCtrl));
   app.post("/login", asyncWrapper(loginCtrl));
   app.get("/current", authMiddleware, asyncWrapper(currentCtrl));
+  app.patch("/logout", authMiddleware, asyncWrapper(LogOutCtrl));
 
   app.get("/api/notices", asyncWrapper(getNoticesByTitleCTRL));
   app.get("/api/notices/:category", asyncWrapper(getNoticesByCategoryCTRL));
