@@ -7,7 +7,18 @@ export const addNews = async (body: INews) => {
   await newNew.save();
   return newNew;
 };
-export const getAllNews = async () => {
-  const response = News.find({})
+export const getNewsByTitle = async (title: string) => {
+  let normalizedTitle:string = '';
+  if (title !== undefined) {
+    if (title.includes('-')) {
+       normalizedTitle = title.trim().split("-").join(" "); 
+    }
+  }
+  console.log(normalizedTitle);
+  
+  const response = await News.find({
+    title: normalizedTitle
+  });
+
   return response;
 };

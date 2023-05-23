@@ -18,8 +18,8 @@ import {
   addServiceCTRL,
   getAllServicesCTRL,
 } from "./controllers/serviceController";
-import { addNewsCTRL, getAllNewsCTRL } from "./controllers/newsContoller";
-import { registrationCtrl, loginCtrl, currentCtrl } from "./controllers/authController";
+import { addNewsCTRL, getNewsByTitleCTRL } from "./controllers/newsContoller";
+import { registrationCtrl, loginCtrl, currentCtrl, LogOutCtrl } from "./controllers/authController";
 import { authMiddleware } from "./middlewares/authMiddleware";
 
 import { addNoticeValidation } from "./middlewares/noticeValidation";
@@ -42,11 +42,12 @@ const routes = (app: Express) => {
   app.get("/api/service", asyncWrapper(getAllServicesCTRL));
 
   app.post("/api/news", uploadCloud.single("imageURL"), asyncWrapper(addNewsCTRL));
-  app.get("/api/news", asyncWrapper(getAllNewsCTRL));
+  app.get("/api/news", asyncWrapper(getNewsByTitleCTRL));
 
   app.post("/registration",  asyncWrapper(registrationCtrl));
   app.post("/login", asyncWrapper(loginCtrl));
   app.get("/current", authMiddleware, asyncWrapper(currentCtrl));
+  app.patch("/logout", authMiddleware, asyncWrapper(LogOutCtrl));
 
   app.get("/api/notices", asyncWrapper(getNoticesByTitleCTRL));
   app.get("/api/notices/:category", asyncWrapper(getNoticesByCategoryCTRL));
