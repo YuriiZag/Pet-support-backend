@@ -49,8 +49,8 @@ const routes = (app: Express) => {
   app.get("/current", authMiddleware, asyncWrapper(currentCtrl));
   app.patch("/logout", authMiddleware, asyncWrapper(LogOutCtrl));
 
-  app.get("/api/notices", asyncWrapper(getNoticesByTitleCTRL));
-  app.get("/api/notices/:category", asyncWrapper(getNoticesByCategoryCTRL));
+  app.get("/api/notices/byTitle", asyncWrapper(getNoticesByTitleCTRL));
+  app.get("/api/notices/byCategory", asyncWrapper(getNoticesByCategoryCTRL));
   app.get("/api/notice/:id", asyncWrapper(getNoticesByIdCTRL));
   app.patch(
     "/api/notice/:id",

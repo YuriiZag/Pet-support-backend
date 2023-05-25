@@ -39,7 +39,7 @@ export const getNoticesByCategoryCTRL = async (
   res: Response,
   next: NextFunction
 ) => {
-  const category = req.params.category as string;
+  const category = req.query.category as string;
   const response = await getNoticesByCategory(category);
   return res.status(201).json({ message: "Notices by category", response });
 };
