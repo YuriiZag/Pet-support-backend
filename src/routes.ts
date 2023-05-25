@@ -1,6 +1,5 @@
 import { Express, Request, Response } from "express";
 import asyncWrapper from "./heplers/asyncWrapper";
-
 import {
   addNoticeCTRL,
   deleteNoticesByIdCTRL,
@@ -11,9 +10,7 @@ import {
   getPrivatNoticesCTRL,
   setFavouriteNoticeCTRL,
 } from "./controllers/noticesController";
-
 import { addPetCTRL, deletePetCTRL } from "./controllers/petController";
-
 import {
   addServiceCTRL,
   getAllServicesCTRL,
@@ -25,15 +22,14 @@ import {
   currentCtrl,
 } from "./controllers/authController";
 import { authMiddleware } from "./middlewares/authMiddleware";
-
 import { uploadCloud } from "./middlewares/fileUploadMiddleware";
 import { getUsersPetsInfoCTRL } from "./controllers/UsersPetsController";
+
 const routes = (app: Express) => {
   app.delete("/api/pets/:petId", authMiddleware, asyncWrapper(deletePetCTRL));
   app.post(
     "/api/pets",
     authMiddleware,
-
     uploadCloud.single("photo"),
     asyncWrapper(addPetCTRL)
   );
