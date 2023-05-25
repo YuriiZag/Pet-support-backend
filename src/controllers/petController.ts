@@ -7,7 +7,9 @@ export const addPetCTRL = async (
   res: Response,
   next: NextFunction
 ) => {
-  const response = await addPet(req.body, req.user);
+  console.log(req.user.userId);
+  
+  const response = await addPet(req.body, req.user.userId);
   return res.status(201).json({ message: "Pet added", response });
 };
 
@@ -17,6 +19,6 @@ export const deletePetCTRL = async (
   next: NextFunction
 ) => {
   const { petId } = req.params;
-  const response = await deletePet(petId, req.user);
+  const response = await deletePet(petId, req.user.userId);
   return res.status(201).json({message:'Pet deleted', response });
 };

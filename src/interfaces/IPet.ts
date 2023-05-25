@@ -1,10 +1,7 @@
-
-
-
 export interface IPet {
-    name: string;
-    animal: string;
-    breed: string;
-    place: string;
-    age: string | number;
+  name: string;
+  dateOfBirth: string | number;
+  breed: string;
+  photo: string;
+  comments: string;
 }
