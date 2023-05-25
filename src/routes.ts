@@ -1,3 +1,6 @@
+import { addNoticeValidation } from './middlewares/noticeValidation';
+import { registrationCtrl,LogOutCtrl,currentCtrl,loginCtrl } from './controllers/authController';
+import { authMiddleware } from './middlewares/authMiddleware';
 import { Express, Request, Response } from "express";
 import asyncWrapper from "./heplers/asyncWrapper";
 import {
@@ -17,6 +20,7 @@ import {
 } from "./controllers/serviceController";
 import { uploadCloud } from "./middlewares/fileUploadMiddleware";
 import { getUsersPetsInfoCTRL } from "./controllers/UsersPetsController";
+
 
 const routes = (app: Express) => {
   app.delete("/api/pets/:petId", authMiddleware, asyncWrapper(deletePetCTRL));
