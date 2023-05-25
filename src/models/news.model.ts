@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
 
 const newsSchema = new mongoose.Schema({
-  avatar: {
-    type: String,
-  },
   title: {
     type: String,
     require: [true, "Set title"],
@@ -12,9 +9,16 @@ const newsSchema = new mongoose.Schema({
     type: String,
     require: [true, "Set text"],
   },
+  source: {
+    type: String,
+    require: [true, "Set source"]
+  },
   date: {
     type: String,
     require: [true, "Set date"],
+  },
+  avatar: {
+    type: String,
   },
 });
 

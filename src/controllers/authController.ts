@@ -1,5 +1,5 @@
 import { IUserRequest } from "./../interfaces/IUserRequest";
-import { register, login, current } from "../services/auth";
+import { register, login, current, logOut } from "../services/auth";
 import { Request, Response, NextFunction } from "express";
 
 import { IUser } from "../interfaces/IUser";
@@ -34,5 +34,16 @@ export const currentCtrl = async (
   const user = await current(req.user);
   res.json({
     user
+  });
+};
+
+export const LogOutCtrl = async (
+  req: IUserRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = await logOut(req.user);
+  res.json({
+    user,
   });
 };

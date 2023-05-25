@@ -15,13 +15,6 @@ import {
   addServiceCTRL,
   getAllServicesCTRL,
 } from "./controllers/serviceController";
-import { addNewsCTRL, getAllNewsCTRL } from "./controllers/newsContoller";
-import {
-  registrationCtrl,
-  loginCtrl,
-  currentCtrl,
-} from "./controllers/authController";
-import { authMiddleware } from "./middlewares/authMiddleware";
 import { uploadCloud } from "./middlewares/fileUploadMiddleware";
 import { getUsersPetsInfoCTRL } from "./controllers/UsersPetsController";
 
@@ -43,41 +36,29 @@ const routes = (app: Express) => {
   );
   app.get("/api/service", asyncWrapper(getAllServicesCTRL));
 
-  app.post(
-    "/api/news",
-    uploadCloud.single("imageURL"),
-    asyncWrapper(addNewsCTRL)
-  );
-  app.get("/api/news", asyncWrapper(getAllNewsCTRL));
-
   app.post("/registration", asyncWrapper(registrationCtrl));
   app.post("/login", asyncWrapper(loginCtrl));
   app.get("/current", authMiddleware, asyncWrapper(currentCtrl));
+  app.patch("/logout", authMiddleware, asyncWrapper(LogOutCtrl));
 
   app.get("/api/notices", asyncWrapper(getNoticesByTitleCTRL));
   app.get("/api/notices/:category", asyncWrapper(getNoticesByCategoryCTRL));
-  app.get("/api/notices/:id", asyncWrapper(getNoticesByIdCTRL));
-  app.patch("/api/notices/:id", asyncWrapper(setFavouriteNoticeCTRL));
-  app.get(
-    "/api/notices/privat",
+  app.get("/api/notice/:id", asyncWrapper(getNoticesByIdCTRL));
+  app.patch(
+    "/api/notice/:id",
     authMiddleware,
-    asyncWrapper(getPrivatNoticesCTRL)
+    asyncWrapper(setFavouriteNoticeCTRL)
   );
-  app.get(
-    "/api/notices/privat/favourite",
-    authMiddleware,
-    asyncWrapper(getPrivatFavouriteNoticesCTRL)
-  );
+  app.get("/api/privat-notices",authMiddleware, asyncWrapper(getPrivatNoticesCTRL));
+  app.get("/api/privat-notices/favourite",authMiddleware, asyncWrapper(getPrivatFavouriteNoticesCTRL));  
   app.post(
     "/api/notices",
     authMiddleware,
-    uploadCloud.single("imageURL"),
+    uploadCloud.single("avatar"),
+    addNoticeValidation,
     asyncWrapper(addNoticeCTRL)
   );
-  app.delete(
-    "/api/notices/:id",
-    authMiddleware,
-    asyncWrapper(deleteNoticesByIdCTRL)
-  );
+  app.delete("/api/notice/:id",authMiddleware, asyncWrapper(deleteNoticesByIdCTRL));
+
 };
 export default routes;
