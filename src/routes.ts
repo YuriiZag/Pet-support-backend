@@ -1,6 +1,5 @@
 import { Express, Request, Response } from "express";
 import asyncWrapper from "./heplers/asyncWrapper";
-
 import {
   addNoticeCTRL,
   deleteNoticesByIdCTRL,
@@ -11,19 +10,11 @@ import {
   getPrivatNoticesCTRL,
   setFavouriteNoticeCTRL,
 } from "./controllers/noticesController";
-
 import { addPetCTRL, deletePetCTRL } from "./controllers/petController";
-
 import {
   addServiceCTRL,
   getAllServicesCTRL,
 } from "./controllers/serviceController";
-import { addNewsCTRL, getNewsByTitleCTRL } from "./controllers/newsContoller";
-import { registrationCtrl, loginCtrl, currentCtrl, LogOutCtrl } from "./controllers/authController";
-import { authMiddleware } from "./middlewares/authMiddleware";
-
-import { addNoticeValidation } from "./middlewares/noticeValidation";
-import { getPetValidation } from "./middlewares/petsValidation";
 import { uploadCloud } from "./middlewares/fileUploadMiddleware";
 import { getUsersPetsInfoCTRL } from "./controllers/UsersPetsController";
 
@@ -32,19 +23,20 @@ const routes = (app: Express) => {
   app.post(
     "/api/pets",
     authMiddleware,
-    getPetValidation,
+    uploadCloud.single("photo"),
     asyncWrapper(addPetCTRL)
   );
 
-  app.get("/api/user/pets",authMiddleware, asyncWrapper(getUsersPetsInfoCTRL))
+  app.get("/api/user/pets", authMiddleware, asyncWrapper(getUsersPetsInfoCTRL));
 
-  app.post("/api/service", uploadCloud.single("logo"), asyncWrapper(addServiceCTRL));
+  app.post(
+    "/api/service",
+    uploadCloud.single("logo"),
+    asyncWrapper(addServiceCTRL)
+  );
   app.get("/api/service", asyncWrapper(getAllServicesCTRL));
 
-  app.post("/api/news", uploadCloud.single("imageURL"), asyncWrapper(addNewsCTRL));
-  app.get("/api/news", asyncWrapper(getNewsByTitleCTRL));
-
-  app.post("/registration",  asyncWrapper(registrationCtrl));
+  app.post("/registration", asyncWrapper(registrationCtrl));
   app.post("/login", asyncWrapper(loginCtrl));
   app.get("/current", authMiddleware, asyncWrapper(currentCtrl));
   app.patch("/logout", authMiddleware, asyncWrapper(LogOutCtrl));

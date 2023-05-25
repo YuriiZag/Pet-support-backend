@@ -7,6 +7,8 @@ export const getUsersPetsInfoCTRL = async (
   res: Response,
   next: NextFunction
 ) => {
-  const response = await getUsersPetsInfo(req.user);
+  console.log(req.user.userId);
+  
+  const response = await getUsersPetsInfo(req.user.userId);
   return res.status(201).json({ message: "Success", response });
 };
