@@ -7,9 +7,10 @@ export const addPetCTRL = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.user.userId);
   
-  const response = await addPet(req.body, req.user.userId);
+  const path = req.file?.path as string
+  
+  const response = await addPet(req.body, req.user.userId, path);
   return res.status(201).json({ message: "Pet added", response });
 };
 
