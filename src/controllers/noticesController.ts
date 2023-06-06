@@ -10,6 +10,7 @@ import {
   setFavouriteNotice,
 } from "../services/notices";
 import { IUserRequest } from "../interfaces/IUserRequest";
+import { INotice } from "../interfaces/INotice";
 
 export const addNoticeCTRL = async (
   req: IUserRequest,
@@ -59,11 +60,13 @@ export const setFavouriteNoticeCTRL = async (
   res: Response,
   next: NextFunction
 ) => {
-  const id = req.params.id as string;
-  console.log('1',req.user);
+  const id = req.body.noticeId as string;
+
   
   const response = await setFavouriteNotice(id, req.user);
-  return res.status(201).json({ message: "Notice set to favourite", response });
+  console.log(response);
+  
+  return res.status(201).json({ message: response });
 };
 
 export const getPrivatNoticesCTRL = async (
