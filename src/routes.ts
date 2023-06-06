@@ -49,7 +49,7 @@ const routes = (app: Express) => {
   app.get("/api/notices/byCategory", asyncWrapper(getNoticesByCategoryCTRL));
   app.get("/api/notice/:id", asyncWrapper(getNoticesByIdCTRL));
   app.patch(
-    "/api/notice/:id",
+    "/api/user/favourite",
     authMiddleware,
     asyncWrapper(setFavouriteNoticeCTRL)
   );

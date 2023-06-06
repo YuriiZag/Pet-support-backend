@@ -9,4 +9,7 @@ export interface INotice {
   owner: string;
   place: string;
   price?: string;
+  commentary: string;
+  ownerEmail: string;
+  ownerPhone: string;
 }
