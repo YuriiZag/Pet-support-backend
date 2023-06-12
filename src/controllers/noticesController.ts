@@ -60,7 +60,6 @@ export const setFavouriteNoticeCTRL = async (
   next: NextFunction
 ) => {
   const id = req.params.id as string;
-  console.log('1',req.user);
   
   const response = await setFavouriteNotice(id, req.user);
   return res.status(201).json({ message: "Notice set to favourite", response });

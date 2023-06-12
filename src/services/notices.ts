@@ -60,7 +60,7 @@ export const setFavouriteNotice = async (
   const foundUser: any = await User.findById({ _id: user.userId });
   foundUser.favourite.map((noticeId) => {
     if (noticeId === id) {
-      throw new ConflictError(`notice with id ${id} already in list`);
+      throw new ConflictError(`Notice with id ${id} already in list`);
     }
   });
   await User.findOneAndUpdate(
