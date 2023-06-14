@@ -27,9 +27,23 @@ import { uploadCloud } from "./middlewares/fileUploadMiddleware";
 import {
   changeUserInfoCTRL,
   getUsersPetsInfoCTRL,
+  recipeCRTL,
+  setFavoriteRecipeCTRL,
+  setSavedRecipeCTRL,
+  getFavoriteRecipeCTRL,
+  getSavedRecipeCTRL,
+  updateRecipeCTRL
 } from "./controllers/UsersController";
 
 const routes = (app: Express) => {
+  app.get("/recipe", asyncWrapper(recipeCRTL));
+  app.get("/recipe/favorite", asyncWrapper(getFavoriteRecipeCTRL));
+  app.get("/recipe/saved", asyncWrapper(getSavedRecipeCTRL));
+  app.patch("/recipe/:id/favorite", asyncWrapper(setFavoriteRecipeCTRL));
+  app.patch("/recipe/:id/saved", asyncWrapper(setSavedRecipeCTRL));
+  app.patch("/recipe/:id", asyncWrapper(updateRecipeCTRL));
+
+
   app.delete("/api/pets/:petId", authMiddleware, asyncWrapper(deletePetCTRL));
   app.post(
     "/api/pets",
@@ -39,7 +53,6 @@ const routes = (app: Express) => {
   );
 
   app.get("/api/user/pets", authMiddleware, asyncWrapper(getUsersPetsInfoCTRL));
-
   app.post(
     "/api/service",
     uploadCloud.single("logo"),
