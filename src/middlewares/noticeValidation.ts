@@ -12,15 +12,16 @@ export const addNoticeValidation = (
     category: Joi.string()
       .required()
       .valid("sell", "lost/found", "in good hands"),
-    petName: Joi.string(),
+    petName: Joi.string().max(50),
     kind: Joi.string().required(),
-    breed: Joi.string(),
+    breed: Joi.string().max(30),
     sex: Joi.string().required().valid("male", "female"),
-    dateOfBirth: Joi.string(),
+    dateOfBirth: Joi.string().max(10),
     avatar: Joi.string().uri(),
     owner: Joi.string(),
-    place: Joi.string().required(),
-    price: Joi.string(),
+    place: Joi.string().required().max(30),
+    price: Joi.string().max(20),
+    commentary: Joi.string().max(120)
   });
 
   const validationResult = schema.validate(req.body);

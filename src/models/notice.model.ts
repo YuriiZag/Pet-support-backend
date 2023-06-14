@@ -41,6 +41,18 @@ const noticeSchema = new mongoose.Schema({
   price: {
     type: String,
   },
+  commentary: {
+    type: String,
+    require: [true, "add commentary"]
+  },
+  ownerEmail: {
+    type: String,
+    require: [true]
+  },
+  ownerPhone: {
+    type: String,
+    require: [true]
+  }
 });
 
 const Notice = mongoose.model("Notices", noticeSchema);

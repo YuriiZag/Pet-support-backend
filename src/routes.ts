@@ -65,7 +65,7 @@ const routes = (app: Express) => {
   app.get("/current", authMiddleware, asyncWrapper(currentCtrl));
   app.patch("/logout", authMiddleware, asyncWrapper(LogOutCtrl));
 
-  app.patch(
+app.patch(
     "/api/user",
     authMiddleware,
     uploadCloud.single("avatar"),
@@ -76,7 +76,7 @@ const routes = (app: Express) => {
   app.get("/api/notices/:category", asyncWrapper(getNoticesByCategoryCTRL));
   app.get("/api/notice/:id", asyncWrapper(getNoticesByIdCTRL));
   app.patch(
-    "/api/notice/:id",
+    "/api/user/favourite",
     authMiddleware,
     asyncWrapper(setFavouriteNoticeCTRL)
   );
