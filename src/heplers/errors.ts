@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import log from "../utils/logger";
 
 export class MyCustomError extends Error {
   status = 400;
@@ -42,7 +43,7 @@ export const errorHadler = (
 ) => {
   if (err instanceof MyCustomError) {
     return res.status(err.status).json({ message: err.message });
-  }
+  }  
   return res.status(500).json({
     message: err.message});
 };
