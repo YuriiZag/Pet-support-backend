@@ -13,10 +13,6 @@ const noticeSchema = new mongoose.Schema({
   petName: {
     type: String
   },
-  kind: {
-    type: String,
-    require: [true, "Set pet king"],
-  },
   breed: {
     type: String,
   },

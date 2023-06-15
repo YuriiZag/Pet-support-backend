@@ -13,7 +13,6 @@ export const addNoticeValidation = (
       .required()
       .valid("sell", "lost/found", "in good hands"),
     petName: Joi.string().max(50),
-    kind: Joi.string().required(),
     breed: Joi.string().max(30),
     sex: Joi.string().required().valid("male", "female"),
     dateOfBirth: Joi.string().max(10),
