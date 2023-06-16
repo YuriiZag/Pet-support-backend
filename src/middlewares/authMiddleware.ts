@@ -27,7 +27,8 @@ export const authMiddleware = (
   if (token) {
     try {
       const user = jwt.decode(token[1], salt) as JwtPayload;
-
+      console.log(21, user);
+      
       req.user = user;
       
     } catch (error) {
