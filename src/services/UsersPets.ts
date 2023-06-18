@@ -16,10 +16,13 @@ export const getUsersPetsInfo = async (userId: string) => {
   return info;
 };
 
-export const changeUserInfo = async (userId: string, body: any) => {
+export const changeUserInfo = async (userId: string, body: any, path: string) => {
+  if (path) {
+    const changedUser = await User.findOneAndUpdate({ _id: userId }, {avatar: path});
+  return changedUser;
+  }
   const changedUser = await User.findOneAndUpdate({ _id: userId }, body);
-  console.log(changedUser);
-
+  
   return changedUser;
 };
 

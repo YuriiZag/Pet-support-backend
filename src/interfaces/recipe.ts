@@ -1,7 +1,4 @@
 export interface Recipe {
-  _id: {
-    $oid: string;
-  };
   title: string;
   area: string;
   instructions: string;
