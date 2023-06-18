@@ -25,7 +25,9 @@ export const changeUserInfoCTRL = async (
   res: Response,
   next: NextFunction
 ) => {
-  const response = await changeUserInfo(req.user.userId, req.body);
+  const path = req.file?.path as string
+  
+  const response = await changeUserInfo(req.user.userId, req.body, path);
 
   return res.status(201).json({ message: "Success", response });
 };
