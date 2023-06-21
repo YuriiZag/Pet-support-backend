@@ -50,8 +50,6 @@ export const login = async (body: body) => {
 };
 
 export const current = async (user: IRequestOwner) => {
-  console.log(user);
-  
   const currentUser = await User.findById(user.userId);
   if (!currentUser) {
     throw new NotAuthorizedError("Not authorized");
