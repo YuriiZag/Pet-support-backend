@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { getNewsCTRL, getNews } from "../services/news";
+import {  getNews } from "../services/news";
 
   export const getNewsCTRL = async (
     req: Request,
