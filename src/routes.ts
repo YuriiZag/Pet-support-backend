@@ -34,6 +34,7 @@ import {
   getSavedRecipeCTRL,
   updateRecipeCTRL
 } from "./controllers/UsersController";
+import { getNewsCTRL } from "./controllers/newsContoller";
 
 const routes = (app: Express) => {
   app.get("/recipe", asyncWrapper(recipeCRTL));
@@ -43,6 +44,7 @@ const routes = (app: Express) => {
   app.patch("/recipe/:id/saved", asyncWrapper(setSavedRecipeCTRL));
   app.patch("/recipe/:id", asyncWrapper(updateRecipeCTRL));
 
+  app.get("/news", asyncWrapper(getNewsCTRL));
 
   app.delete("/api/pets/:petId", authMiddleware, asyncWrapper(deletePetCTRL));
   app.post(
@@ -51,8 +53,8 @@ const routes = (app: Express) => {
     uploadCloud.single("photo"),
     asyncWrapper(addPetCTRL)
   );
-
   app.get("/api/user/pets", authMiddleware, asyncWrapper(getUsersPetsInfoCTRL));
+
   app.post(
     "/api/service",
     uploadCloud.single("logo"),
