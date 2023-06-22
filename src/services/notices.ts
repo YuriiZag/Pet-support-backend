@@ -72,11 +72,20 @@ export const setFavouriteNotice = async (
     throw new WrongParametersError(`There are no notice with id: ${id} found`);
   }
   const foundUser: any = await User.findById({ _id: user.userId });
-  foundUser.favourite.map((noticeId) => {
-    if (noticeId === id) {
-      throw new ConflictError(`Notice with id ${id} already in list`);
-    }
-  });
+  console.log(foundUser.favourite);
+  
+  if (foundUser.favourite.includes(id)) {
+    const updatedList = foundUser.favourite.filter((noticeId) => noticeId !== id)
+    await User.findByIdAndUpdate(
+      { _id: user.userId },
+      {
+        $set: {
+          favourite: [...updatedList],
+        },
+      }
+    );
+    return noticeById
+  }
   await User.findOneAndUpdate(
     { _id: user.userId },
     {
