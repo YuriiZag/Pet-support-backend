@@ -65,6 +65,8 @@ export const setFavouriteNotice = async (
   id: string | undefined,
   user: IRequestOwner
 ) => {
+  console.log(id);
+  
   const noticeById = await Notice.findById({ _id: id });
   if (noticeById === null) {
     throw new WrongParametersError(`There are no notice with id: ${id} found`);
