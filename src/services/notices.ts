@@ -39,12 +39,9 @@ export const addNotice = async (
 export const getNoticesByTitle = async (title: string | undefined) => {
   let normalizedTitle: string = "";
   if (title !== undefined) {
-    if (title.includes("-")) {
-      normalizedTitle = title.split("-").join(" ");
-    }
-  }
-  const noticesByTitle = await Notice.find({ title });
-  return noticesByTitle;
+    const noticesByTitle = await Notice.find({ title: { $regex: title, $options: 'i' } });
+  
+  return noticesByTitle;}
 };
 
 export const getNoticesByCategory = async (category: string | undefined) => {
